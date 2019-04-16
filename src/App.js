@@ -11,23 +11,25 @@ class App extends React.Component {
       mode: 'answer'
     }
   }
-  setMode(mode){
-    console.log("set"+mode)
-    this.setState({mode})
+  setMode=()=>{
+    if (this.state.mode === "answer")
+      this.setState({mode:"create"})
+    else
+      this.setState({mode:"answer"})
   }
 
   render() {
     if(this.state.mode === "answer")
       return (
         <div className="App">
-          <FormAns setMode={this.setMode("create")} ></FormAns>
+          <FormAns setMode={this.setMode} ></FormAns>
         </div>
       );
-      return (
-        <div className="App">
-          <FormQuestionnaire setMode={this.setMode("answer")}></FormQuestionnaire>
-        </div>
-      )
+    return (
+      <div className="App">
+        <FormQuestionnaire setMode={this.setMode}></FormQuestionnaire>
+      </div>
+    );
   }
 }
 
