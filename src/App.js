@@ -4,11 +4,11 @@ import FormAns from './components/FormAns'
 import FormQuestionnaire from './components/FormQuestionnaire'
 
 
-class App extends React.Component {
+class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      mode: 'answer'
+      mode: 'create'
     }
   }
   setMode=()=>{
