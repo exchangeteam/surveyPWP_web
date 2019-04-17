@@ -1,0 +1,17 @@
+.card{
+    width: 400px;
+    font-size: 14px;
+    color: grey;
+    line-height: 0.7;
+}
+.question_title{
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+}
+
+.button_add{
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}

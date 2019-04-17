@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {HashRouter as Router, Route, Link, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Link, Switch} from 'react-router-dom'
 // import {Router,Route} from 'react-router';
 import App from './App';
 import Questionnaire from './components/Questionnaire'
@@ -17,16 +17,12 @@ import Questionnaire from './components/Questionnaire'
 class RouterView extends Component {
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={App}>
-            {/* 当 url 为/时渲染 Dashboard */}
-            {/* <IndexRoute component={Dashboard} /> */}
-            
-          </Route>
+      <BrowserRouter>
+          <Route exact path="/" component={App}></Route>
           <Route path="/questionnaire" component={Questionnaire} />
-        </Switch>
-      </Router>
+          
+          
+      </BrowserRouter>
     )
   }
 }

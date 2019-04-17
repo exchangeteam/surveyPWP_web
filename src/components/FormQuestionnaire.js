@@ -4,7 +4,9 @@ import './FormAns.css'
 import 'antd/dist/antd.css'
 import axios from 'axios'
 import api from './api';
-import {Redirect} from 'react-router-dom'
+import PropTypes from "prop-types";
+import {withRouter} from 'react-router-dom'
+
 
 const { TextArea } = Input;
 
@@ -23,13 +25,20 @@ function hasErrors(fieldsError) {
 }
 
 class FormAns extends Component {
+    static contextTypes = {
+        router: PropTypes.object
+    }
+    constructor(props, context) {
+        super(props, context);
+    }
     componentDidMount() {
         // To disabled submit button at the beginning.
         this.props.form.validateFields();
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields(['title', 'description'], { first: true }, (err, values) => {
+        let that = this;
+        that.props.form.validateFields(['title', 'description'], { first: true }, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
                 const {title, discription} = values
@@ -38,11 +47,7 @@ class FormAns extends Component {
                     if(res.status === 201){
                         var location = res.headers["location"]
                         console.log(location)
-                        return <Redirect to={{
-                                            pathname:'/questionnaire',
-                                            state:{location:location}
-                                            }}
-                                />
+                        that.props.history.push({pathname:'/questionnaire',state:{location:location}})
                     }
                     else
                         openNotificationWithIcon('error',res.status)
@@ -92,4 +97,4 @@ class FormAns extends Component {
 
 const CustomizedFormAns = Form.create({})(FormAns)
 
-export default CustomizedFormAns;
+export default withRouter(CustomizedFormAns);
