@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Icon, Form, Input, notification  } from 'antd'
+import { Button, Icon, Form, Input, notification, Modal } from 'antd'
 import './FormAns.css'
 import 'antd/dist/antd.css'
 import axios from 'axios'
 import api from './api';
 import PropTypes from "prop-types";
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 
 const { TextArea } = Input;
@@ -15,8 +15,8 @@ const iconSvg = () => (
 )
 const openNotificationWithIcon = (type, status) => {
     notification[type]({
-      message: 'Error, status code '+status,
-      description: 'there is an error in posting, please check your input!',
+        message: 'Error, status code ' + status,
+        description: 'there is an error in posting, please check your input!',
     });
 };
 
@@ -24,16 +24,80 @@ function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
+const ModalForm = Form.create({ name: 'form_in_modal' })(
+    // eslint-disable-next-line
+    class extends React.Component {
+        render() {
+            const {
+                visible, onCancel, onCreate, form,
+            } = this.props;
+            const { getFieldDecorator } = form;
+            return (
+                <Modal
+                    visible={visible}
+                    title="Go to my questionnaire"
+                    onCancel={onCancel}
+                    onOk={onCreate}
+                >
+                    <Form layout="vertical">
+                        <Form.Item label="Questionnaire id">
+                            {getFieldDecorator('id', {
+                                rules: [{ required: true, message: 'Please input the id of your questionnaire!' }],
+                            })(
+                                <Input />
+                            )}
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            );
+        }
+    }
+);
+
 class FormAns extends Component {
     static contextTypes = {
         router: PropTypes.object
     }
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            visible: false,
+        }
+    }
+    showModal = () => {
+        this.setState({ visible: true });
+    }
+
+    handleCancel = () => {
+        this.setState({ visible: false });
     }
     componentDidMount() {
         // To disabled submit button at the beginning.
         this.props.form.validateFields();
+    }
+    handleCreate = () => {
+        let that = this
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            console.log('Received values of form: ', values);
+            form.resetFields();
+            that.setState({ visible: false });
+            let url = api.root + api.prefix + "questionnaires/" + values["id"]+"/"
+            axios.get(url).then(res => {
+                console.log(res)
+                if (res.status === 200)
+                    that.props.history.push({ pathname: '/questionnaire', state: { location: url } })
+                else openNotificationWithIcon("error", res.status)
+          })
+        });
+    }
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -41,16 +105,16 @@ class FormAns extends Component {
         that.props.form.validateFields(['title', 'description'], { first: true }, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                const {title, discription} = values
-                axios.post(api.root+api.prefix+'questionnaires/',{title:title,discription:discription}).then(res => {
+                const { title, discription } = values
+                axios.post(api.root + api.prefix + 'questionnaires/', { title: title, discription: discription }).then(res => {
                     console.log(res)
-                    if(res.status === 201){
+                    if (res.status === 201) {
                         var location = res.headers["location"]
                         console.log(location)
-                        that.props.history.push({pathname:'/questionnaire',state:{location:location}})
+                        that.props.history.push({ pathname: '/questionnaire', state: { location: location } })
                     }
                     else
-                        openNotificationWithIcon('error',res.status)
+                        openNotificationWithIcon('error', res.status)
                 })
             }
         });
@@ -88,6 +152,13 @@ class FormAns extends Component {
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="formButton" disabled={hasErrors(getFieldsError())}>Create questionnaire</Button>
                         Or <a onClick={this.props.setMode} >Answer one.</a>
+                        <a onClick={this.showModal} style={{ float: "right" }}>My questionnaire</a>
+                        <ModalForm
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                        />
                     </Form.Item>
                 </Form>
             </div>

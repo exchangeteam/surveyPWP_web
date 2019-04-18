@@ -65,7 +65,10 @@ class FormAns extends Component {
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="formButton" disabled={hasErrors(getFieldsError())}>Go !</Button>
-                        Or <a onClick={this.props.setMode} >Create one.</a>
+                        <div>
+                            Or <a onClick={this.props.setMode} >Create one.</a>
+                        </div>
+                        
                     </Form.Item>
                 </Form>
             </div>

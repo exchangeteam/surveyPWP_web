@@ -219,7 +219,7 @@ class Questionnaire extends Component {
         </Card>
       )}
     return (
-      <div>
+      <div className="container">
         <Card title={this.state.title} className='card' headStyle={{fontsize: "30px",fontweight: 500}}
           extra = {<div>
                     <Icon onClick={this.handleDelete.bind(this,questionnaireURL,"questionnaire")} type="delete" style={{paddingRight:"0.8em"}}/>

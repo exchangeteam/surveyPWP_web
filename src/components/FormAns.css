@@ -17,3 +17,7 @@ Form.Item{
     width: 100%;
     text-align: center;
 }
+.bottomLinks{
+    display: flex;
+    justify-content: space-between;
+}
