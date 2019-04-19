@@ -255,7 +255,7 @@ class Answer extends Component {
           <p>Questionnaire id:  {this.state.id}</p>
           <p className="question_title">Questions:</p>
           {questionCards}
-          <div className="button_add">
+          <div className="buttons_">
             <Button type="primary" onClick={this.handleSubmit}>Submit</Button>
           </div>
         </Card>

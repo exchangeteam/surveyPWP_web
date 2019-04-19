@@ -15,10 +15,14 @@
     color: black;
 }
 
-.button_add{
+.buttons_{
     display: flex;
     justify-content: center;
-    padding: 20px 0;
+    flex-wrap: wrap;
+    padding: 9px 30% 0;
+}
+.button{
+    margin-top: 15px;
 }
 .cardBottom{
     display: flex;

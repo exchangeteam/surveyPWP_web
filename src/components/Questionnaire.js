@@ -230,8 +230,9 @@ class Questionnaire extends Component {
           <p>Questionnaire id:  {this.state.id}</p>
           <p className="question_title">Questions:</p>
           {questionCards}
-          <div className="button_add">
-            <Button type="primary" onClick={this.showModal}>Add a question</Button>
+          <div className="buttons_">
+            <Button onClick={this.showModal} className="button">Add a question</Button>
+            <Button type="primary" className="button" onClick={this.props.history.goBack}>Complete !</Button>
             <ModalForm
               title = {this.state.modal_title}
               wrappedComponentRef={this.saveFormRef}
