@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {BrowserRouter, Route, Link, Switch} from 'react-router-dom'
+import Answer from './components/Answer'
+import MyAnswers from './components/MyAnswers'
 // import {Router,Route} from 'react-router';
 import App from './App';
 import Questionnaire from './components/Questionnaire'
@@ -20,6 +22,8 @@ class RouterView extends Component {
       <BrowserRouter>
           <Route exact path="/" component={App}></Route>
           <Route path="/questionnaire" component={Questionnaire} />
+          <Route path="/answer" component={Answer}/>
+          <Route path="/myAnswers" component={MyAnswers}/>
           
           
       </BrowserRouter>

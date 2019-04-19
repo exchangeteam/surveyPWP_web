@@ -10,6 +10,13 @@ Form.Item{
     text-align: left;
     padding: 30px 0;
 }
+.buttons{
+    display: flex;
+    justify-content: space-around;
+}
+.buttons>.formButton{
+    width: 45%;
+}
 .formButton{
     width: 100%;
 }

@@ -146,7 +146,7 @@ class FormAns extends Component {
                     >
                         {getFieldDecorator('description', {
                         })(
-                            <TextArea rows='4' placeholder="descriptionription of the questionnaire." />
+                            <TextArea rows='4' placeholder="Description of the questionnaire." />
                         )}
                     </Form.Item>
                     <Form.Item>
