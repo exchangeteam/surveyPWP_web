@@ -171,7 +171,8 @@ class Answer extends Component {
 				this.uploadAnswers(url)
 			else openNotificationWithIcon('error',"Couldn't reach to the questionnaire","")
 		}).then(res=>{
-			showMessage("success","Requests complete!")
+      showMessage("success","Requests complete!")
+      setTimeout(this.props.history.goBack.bind(this),1500);
 		})
 	}
 	uploadAnswers = (location)=>{
