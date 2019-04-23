@@ -126,6 +126,12 @@ class MyAnswers extends Component {
 				this.setState({
 					items:res.data.items
 				})
+			},
+			err=>{
+				that.setState({
+					items:[],
+					qList:[]
+				})
 			}).then(()=>{
 				that.state.items.forEach((a,index)=>{
 					let url = a["@controls"]["self"]["href"]
