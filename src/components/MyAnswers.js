@@ -201,7 +201,7 @@ class MyAnswers extends Component {
 			if (list[index])
 				answerCards.push(
 					<Card type="inner"
-						title="My answers"
+						title={list[index].title}
 						key={a.id}
 						extra={<div>
 							<Icon onClick={that.handleDelete.bind(this,index)} type="delete" style={{ paddingRight: "0.8em" }} />
