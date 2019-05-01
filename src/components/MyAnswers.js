@@ -125,11 +125,17 @@ class MyAnswers extends Component {
 		if (this.props.location.state["userName"]){
 			var state = this.props.location.state
 			axios.get(api.root+api.prefix+"questionnaires/"+state["questionnaireId"]+"/answers/"+state["userName"]).then(res=>{
+				// console.log(res.data.items)
+				// sort answer items
+				var items = res.data.items.sort((a,b)=>{
+					return a["question_id"] - b["question_id"]
+				})
 				this.setState({
-					items:res.data.items
+					items:items
 				})
 			},
 			err=>{
+				console.log(err)
 				that.setState({
 					items:[],
 					qList:[]
@@ -158,36 +164,42 @@ class MyAnswers extends Component {
 		}
 	}
 	componentWillMount=()=>{
-		let that = this 
-		var list = []
-		if (this.props.location.state["userName"]){
-			var state = this.props.location.state
-			axios.get(api.root+api.prefix+"questionnaires/"+state["questionnaireId"]+"/answers/"+state["userName"]).then(res=>{
-				this.setState({
-					items:res.data.items
-				})
-			}).then(()=>{
-				this.state.items.forEach((a,index)=>{
-					let url = a["@controls"]["self"]["href"]
-					url = api.root+url.substring(1,url.lastIndexOf("answers/"))+"questions/"+a.question_id+"/"
-					// console.log(url)
-					axios.get(url).then(res=>{
-						// console.log(res.data)
-						list.push({
-							id:res.data.id,
-							title:res.data.title,
-							description:res.data.description,
-							questionnaire_id:res.data.questionnaire_id
-						})
-						// console.log(list)
-						this.setState({
-							qList:list
-						})
-					})
-				})
-			})
-			
-		}
+		this.updateLists()
+		// let that = this 
+		// var list = []
+		// if (this.props.location.state["userName"]){
+		// 	var state = this.props.location.state
+		// 	axios.get(api.root+api.prefix+"questionnaires/"+state["questionnaireId"]+"/answers/"+state["userName"]).then(res=>{
+		// 		this.setState({
+		// 			items:res.data.items
+		// 		})
+		// 	},err=>{
+		// 		console.log(err)
+		// 		that.setState({
+		// 			items:[],
+		// 			qList:[]
+		// 		})
+		// 	}).then(()=>{
+		// 		this.state.items.forEach((a,index)=>{
+		// 			let url = a["@controls"]["self"]["href"]
+		// 			url = api.root+url.substring(1,url.lastIndexOf("answers/"))+"questions/"+a.question_id+"/"
+		// 			// console.log(url)
+		// 			axios.get(url).then(res=>{
+		// 				// console.log(res.data)
+		// 				list.push({
+		// 					id:res.data.id,
+		// 					title:res.data.title,
+		// 					description:res.data.description,
+		// 					questionnaire_id:res.data.questionnaire_id
+		// 				})
+		// 				// console.log(list)
+		// 				this.setState({
+		// 					qList:list
+		// 				})
+		// 			})
+		// 		})
+		// 	})		
+		// }
 		
 	}
 	render() {
