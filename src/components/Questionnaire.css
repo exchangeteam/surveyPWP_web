@@ -4,15 +4,16 @@
 }
 
 .card{
-    width: 400px;
-    font-size: 14px;
+    width: 100%;
+    max-width: 450px;
     color: grey;
     line-height: 0.7;
 }
 .question_title{
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 500;
     color: black;
+    line-height: 1;
 }
 
 .buttons_{

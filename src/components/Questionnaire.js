@@ -39,7 +39,7 @@ const ModalForm = Form.create({name:"modal_form"})(
           <Form>
             <Form.Item label="Title">
               {getFieldDecorator('title', {
-                rules: [{ required: true, message: ('Please input the title!') }],
+                 rules: [{ required: true,message: 'Please input your title!' },{max:32,message:"Your title is too long."}],
               })(
                 <Input />
               )}
@@ -157,16 +157,6 @@ class Questionnaire extends Component {
     }else 
       openNotificationWithIcon('error')
   }
-  componentWillUpdate(){
-    // this.updateQuestions(this.props.location.state["location"])
-    console.log("update")
-    // axios.get(this.props.location.state["location"]+"questions/").then(res => {
-    //   this.setState({
-    //     listLen:res.data.items.length, 
-    //     questions:res.data.items
-    //   })
-    // })
-  }
   handleDelete(location,deleteType){
     let that = this
     console.log("delete"+ location)
@@ -207,8 +197,11 @@ class Questionnaire extends Component {
       var url = api.root.substring(0,api.root.length-1) + q["@controls"]["self"]["href"]
       questionCards.push(
         <Card type="inner" 
+          size="small"
+          hoverable="True"
           title={q.title} 
           key={q.id} 
+          style={{marginTop:"10px",minHeight:"120px"}}
           extra={<div>
                   <Icon onClick={this.handleDelete.bind(this,url,"question")} type="delete" style={{paddingRight:"0.8em"}}/>
                   <Icon onClick={this.handleEdit.bind(this,url,"quesiton")} type="edit" />
@@ -220,16 +213,18 @@ class Questionnaire extends Component {
       )}
     return (
       <div className="container">
-        <Card title={this.state.title} className='card' headStyle={{fontsize: "30px",fontweight: 500}}
+        <Card title={this.state.title} className='card' headStyle={{fontsize: "40px",fontweight: 500}}
           extra = {<div>
                     <Icon onClick={this.handleDelete.bind(this,questionnaireURL,"questionnaire")} type="delete" style={{paddingRight:"0.8em"}}/>
                     <Icon onClick={this.handleEdit.bind(this,questionnaireURL,"questionnaire")} type="edit" />
                   </div>} 
         >
-          <p>{this.state.description ? ("Description:" + this.state.description ): "no description"}</p>
-          <p>Questionnaire id:  {this.state.id}</p>
-          <p className="question_title">Questions:</p>
+          <p>{this.state.description ? ("Description:" + this.state.description ): "no description"}
+          <br/>Questionnaire id:  {this.state.id}
+          <br/>Questions:</p>
+          <div className="q_cards">
           {questionCards}
+          </div>
           <div className="buttons_">
             <Button onClick={this.showModal} className="button">Add a question</Button>
             <Button type="primary" className="button" onClick={this.props.history.goBack}>Complete !</Button>

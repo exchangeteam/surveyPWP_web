@@ -145,7 +145,7 @@ class FormAns extends Component {
                         help={titleError || ''}
                     >
                         {getFieldDecorator('title', {
-                            rules: [{ required: true, message: 'Please input your title!' }],
+                            rules: [{ required: true,message: 'Please input your title!' },{max:32,message:"Your title is too long."}],
                         })(
                             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="title" />
                         )}
