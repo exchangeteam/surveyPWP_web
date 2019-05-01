@@ -84,8 +84,7 @@ class MyAnswers extends Component {
 	handleEdit=(index)=>{
 		this.setState({
 			visible:true,
-			editQuestion: this.state.qList[index],
-			editAnswer: this.state.items[index]
+			editIdx:index
 		})
 	}
 	handleCancel = () => {
@@ -93,6 +92,7 @@ class MyAnswers extends Component {
 
   }
   handleCreate = () => {
+		let that = this
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
       if (err) {
@@ -100,15 +100,17 @@ class MyAnswers extends Component {
       }
       console.log('Received values of form: ', values);
       form.resetFields();
-			this.setState({ visible: false });
+			that.setState({ visible: false });
 
-			if (this.state.editAnswer){
-				let a = this.state.editAnswer
-				var url = a["@controls"]["self"]["href"]
-				url = api.root+url.substring(1,url.lastIndexOf("/answers")) +"/questions/"+a.question_id+"/answers/"+a.id+"/"
-				axios.put(url,{content:values["answer"],userName:this.props.location.state["userName"]}).then(res=>{
+			if (that.state.editIdx){
+				let i = that.state.editIdx
+				var answer = that.state.items[i]
+				var url = answer["@controls"]["self"]["href"]
+				url = api.root+url.substring(1,url.lastIndexOf("/answers")) +"/questions/"+answer.question_id+"/answers/"+answer.id+"/"
+				console.log(url)
+				axios.put(url,{content:values["answer"],userName:that.props.location.state["userName"]}).then(res=>{
 					console.log(res)
-					this.updateLists()
+					that.updateLists()
 				})
 			}
     });
@@ -139,12 +141,12 @@ class MyAnswers extends Component {
 					// console.log(url)
 					axios.get(url).then(res=>{
 						// console.log(res.data)
-						list.push({
+						list[index] = {
 							id:res.data.id,
 							title:res.data.title,
 							description:res.data.description,
 							questionnaire_id:res.data.questionnaire_id
-						})
+						}
 						// console.log(list)
 						that.setState({
 							qList:list
@@ -216,7 +218,7 @@ class MyAnswers extends Component {
 						</div>}
 					>
 						<p style={{fontSize:"12px",color:"rgba(0,0,0,0.4)",lineHeight:"1.4"}}>
-							{list[index].description ? ("Description:" + list[index].description ) : "no description"}
+							{list[index].description ? ("Description: " + list[index].description ) : "no description"}
 							<br/>Question id: { list[index].id || "none"}
 						</p>
 						<p>Answer content: {a["content"]}</p>
