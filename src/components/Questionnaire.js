@@ -219,7 +219,7 @@ class Questionnaire extends Component {
                     <Icon onClick={this.handleEdit.bind(this,questionnaireURL,"questionnaire")} type="edit" />
                   </div>} 
         >
-          <p>{this.state.description ? ("Description:" + this.state.description ): "no description"}
+          <p className="questionnaire_info">{this.state.description ? ("Description:" + this.state.description ): "no description"}
           <br/>Questionnaire id:  {this.state.id}
           <br/>Questions:</p>
           <div className="q_cards">

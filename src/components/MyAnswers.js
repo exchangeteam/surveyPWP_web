@@ -222,6 +222,8 @@ class MyAnswers extends Component {
 				answerCards.push(
 					<Card type="inner"
 						title={list[index].title}
+						hoverable="true"
+						style={{marginTop:"10px",minHeight:"120px"}}
 						key={a.id}
 						extra={<div>
 							<Icon onClick={that.handleDelete.bind(this,index)} type="delete" style={{ paddingRight: "0.8em" }} />
