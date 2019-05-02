@@ -30,7 +30,7 @@ const ModalForm = Form.create({ name: 'form_in_modal' })(
       return (
         <Modal
           visible={visible}
-          title={question ? question.title : "Edit a question"}
+          title={question ? question.title : "Edit a answer"}
           okText="Create"
           onCancel={onCancel}
           onOk={onCreate}
@@ -88,7 +88,7 @@ class MyAnswers extends Component {
 		})
 	}
 	handleCancel = () => {
-		this.setState({ visible: false });
+		this.setState({ visible: false,editIdx:null});
 
   }
   handleCreate = () => {
@@ -98,10 +98,10 @@ class MyAnswers extends Component {
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
+			console.log('Received values of form: ', values);
       form.resetFields();
 			that.setState({ visible: false });
-
+			// edit a answer
 			if (that.state.editIdx){
 				let i = that.state.editIdx
 				var answer = that.state.items[i]

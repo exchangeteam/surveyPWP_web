@@ -14,9 +14,9 @@ const openNotificationWithIcon = (type,msg,desc) => {
   });
 };
 const showMessage = (mode,msg) =>{
-  if (mode == "error")
+  if (mode === "error")
     message.error(msg)
-  else if (mode == "success")
+  else if (mode === "success")
     message.success(msg)
   else message.warning(msg)
 }
