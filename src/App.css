@@ -29,6 +29,6 @@ page{
   margin: 25px 0;
 }
 .home>button{
-  position: absolute;
+  position: fixed;
   bottom: 35px; 
 }
