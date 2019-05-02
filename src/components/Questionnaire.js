@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import {notification, Card} from 'antd'
 import axios from 'axios'
 import './Questionnaire.css'
 import 'antd/dist/antd.css'
-import { Button, Modal, Form, Input, Icon, message} from 'antd';
+import { Button, Modal, Form, Input, Icon, message, Typography,notification, Card, List} from 'antd';
 import api from './api'
 
+const { Text } = Typography;
 const { TextArea } = Input;
 const openNotificationWithIcon = (type,msg,desc) => {
   notification[type]({
@@ -60,7 +60,8 @@ class Questionnaire extends Component {
       listLen:0,
       questions:[],
       visible:false,
-      modal_title:"Add a question"
+      modal_title:"Add a question",
+      answers:[]
     }
   }
   updateQuestionnaire = (location) =>{
@@ -82,6 +83,16 @@ class Questionnaire extends Component {
         listLen:res.data.items.length, 
         questions:res.data.items
       })
+    })
+  }
+  updateAnswers=()=>{
+    let answers = this.state.answers
+    answers.forEach((q,index)=>{
+      if (q && q.length!==0)
+        axios.get(api.prefix.substr(0,api.prefix.length-2)+q[0]["@controls"]["self"]["href"]).then(res=>{
+          console.log(res)
+
+        })
     })
   }
   showModal = () => {
@@ -157,12 +168,15 @@ class Questionnaire extends Component {
     }else 
       openNotificationWithIcon('error')
   }
-  handleDelete(location,deleteType){
+  handleDelete(location,deleteType,e){
+    e.persist()
+    // e.stopPropagation();
+    
     let that = this
-    console.log("delete"+ location)
+    console.log("delete: "+ location)
     axios.delete(location).then(res=>{
+      console.log("Delete res",res)
       if(deleteType === "question"){
-        console.log(res)
         let url = String(res.request.responseURL)
         url = url.substring(0,url.lastIndexOf("questions/")+10)//a good way for string slice
         console.log(url)
@@ -171,16 +185,28 @@ class Questionnaire extends Component {
             questions:res.data.items
           })
         }) 
-      }  
+      }else if (deleteType==="answer"){
+        let url = location.substring(0,location.lastIndexOf("answers/")+8)
+        console.log(url)  
+        axios.get(url).then(res=>{
+          console.log(res)
+          let answers = that.state.answers
+          let qIdx= url.substring(url.lastIndexOf("questions/")+10,url.lastIndexOf("/answers"))
+          console.log(qIdx)
+          answers[qIdx] = res.data.items
+          that.setState({answers:answers})
+        })
+      }
     }).then(() => {
       if (deleteType === "questionnaire")
         this.props.history.push("/")
-      else if (deleteType === "question")
+      else
         showMessage("success", deleteType+" is deleted!")
     })
 
   }
-  handleEdit(location,editType){
+  handleEdit(location,editType,e){
+    e.stopPropagation();
     console.log("edit"+ location)
     this.setState({
       create:"edit"+editType,
@@ -190,30 +216,75 @@ class Questionnaire extends Component {
       
     })
   }
+  seeAnswers(url,index){
+    let that = this
+    var answers = this.state.answers
+    if (that.state.answers[index]){
+      answers[index] = null
+      that.setState({answers:answers})
+      console.log(that.state)
+    }else {
+      axios.get(url+"answers/").then(res=>{
+        console.log(res)
+        if(res.data.items.length>0){
+          var answers = that.state.answers
+          answers[index]= res.data.items
+          that.setState({
+            answers: answers
+          })
+        }else showMessage("w","No answers here")
+        
+        
+      })
+    }
+  }
   render() {
+    let that = this
     var questionnaireURL = this.props.location.state["location"]
     const questionCards = []
-    for (let q of this.state.questions) {
-      var url = api.root.substring(0,api.root.length-1) + q["@controls"]["self"]["href"]
-      questionCards.push(
-        <Card type="inner" 
-          size="small"
-          hoverable="True"
-          title={q.title} 
-          key={q.id} 
-          style={{marginTop:"10px",minHeight:"120px"}}
-          extra={<div>
-                  <Icon onClick={this.handleDelete.bind(this,url,"question")} type="delete" style={{paddingRight:"0.8em"}}/>
-                  <Icon onClick={this.handleEdit.bind(this,url,"quesiton")} type="edit" />
-                </div>}
-        >
-          <p>{q.description ? ("Description:" + q.description ): "no description"}</p>
-          <p></p>
-        </Card>
-      )}
+    const quesitons = this.state.questions
+    console.log(quesitons)
+    if (quesitons.length !== 0)
+      quesitons.forEach((q,index)=>{
+        var url = api.root.substring(0,api.root.length-1) + q["@controls"]["self"]["href"]
+        var answer_card = <List
+                itemLayout="horizontal"
+                size="small"
+                dataSource={that.state.answers[index] || ["No answer here."]}
+                style={{"display": that.state.answers[index] ? 'block' : 'none'}}
+                renderItem={item => (
+                  <List.Item extra={<Icon value={index} onClick={(e)=>that.handleDelete(url+"answers/"+item.id+"/","answer",e)} type="close" style={{ paddingRight: "0.8em" }} />}>
+                    <List.Item.Meta
+                      description={<div><Text strong>{item.userName}</Text> <Text type="secondary">Answer id: {item.id}</Text><br/>{item.content}</div>}
+                    />
+                  </List.Item>
+                )}
+              />
+        questionCards.push(
+          <Card type="inner" 
+            size="small"
+            hoverable="True"
+            onClick={this.seeAnswers.bind(this,url,index)}
+            title={q.title} 
+            key={q.id} 
+            style={{marginTop:"10px",minHeight:"80px"}}
+            extra={<div>
+                    <Icon onClick={(e)=>this.handleDelete(url,"question",e)} type="delete" style={{paddingRight:"0.8em"}}/>
+                    <Icon onClick={(e)=>this.handleEdit(url,"quesiton",e)} type="edit" />
+                  </div>}
+          >
+            <p>{q.description ? ("Description:" + q.description ): "no description"}</p>
+            <Card type="inner" size="small" style={{"display": that.state.answers[index] ? 'block' : 'none'}}>
+              {answer_card}
+            </Card>
+          </Card>
+            
+        )
+      })
+    
     return (
       <div className="container">
-        <Card title={this.state.title} className='card' headStyle={{fontsize: "40px",fontweight: 500}}
+        <Card title={this.state.title} className='card' headStyle={{fontsize: "40px",fontweight: 500}} 
           extra = {<div>
                     <Icon onClick={this.handleDelete.bind(this,questionnaireURL,"questionnaire")} type="delete" style={{paddingRight:"0.8em"}}/>
                     <Icon onClick={this.handleEdit.bind(this,questionnaireURL,"questionnaire")} type="edit" />
