@@ -4,6 +4,7 @@ import Answer from './components/Answer'
 import MyAnswers from './components/MyAnswers'
 // import {Router,Route} from 'react-router';
 import App from './App';
+import Home from './Home';
 import Questionnaire from './components/Questionnaire'
 
 // const Home = () => (
@@ -20,7 +21,8 @@ class RouterView extends Component {
   render() {
     return (
       <BrowserRouter>
-          <Route exact path="/" component={App}></Route>
+          <Route exact path="/" component={Home}/>
+          <Route path="/app" component={App}/>
           <Route path="/questionnaire" component={Questionnaire} />
           <Route path="/answer" component={Answer}/>
           <Route path="/myAnswers" component={MyAnswers}/>

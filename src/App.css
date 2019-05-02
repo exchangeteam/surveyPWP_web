@@ -1,3 +1,6 @@
+page{
+  position: relative;
+}
 .App {
   text-align: center;
   display: flex;
@@ -6,4 +9,26 @@
   height: 100%;
   width: 100%;
   display: inline-block;
+}
+.home{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.home>.header{
+  display: flex;
+  width: 100%;
+  max-width: 450px;
+  padding-left: 10px;
+}
+.home>h1{
+  font-family: 'Indie Flower', cursive;
+  font-size: 42px;
+  margin: 25px 0;
+}
+.home>button{
+  position: absolute;
+  bottom: 35px; 
 }
