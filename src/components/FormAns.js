@@ -26,6 +26,10 @@ class FormAns extends Component {
     static contextTypes = {
         router: PropTypes.object
     }
+    goHome=()=>{
+        console.log("go home")
+        this.props.history.push('/')
+    }
     componentDidMount() {
         // To disabled submit button at the beginning.
         this.props.form.validateFields();
@@ -82,7 +86,7 @@ class FormAns extends Component {
             <div className="form">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item> 
-                        <div className='icon'>
+                        <div className='icon' onClick={this.goHome}>
                             <Icon component={iconSvg} ></Icon>
                         </div>
                     </Form.Item>

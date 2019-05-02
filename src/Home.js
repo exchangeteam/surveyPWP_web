@@ -18,6 +18,10 @@ class Home extends Component {
             list:[]
         }
     }
+    goHome=()=>{
+        console.log("go home")
+        this.props.history.push('/')
+    }
     toApp=()=>{
         this.props.history.push('/app')
     }
@@ -38,7 +42,7 @@ class Home extends Component {
         }
         return (
             <div className ="home">  
-                <h1>Survey PWP</h1>
+                <h1 onClick={this.goHome}>Survey PWP</h1>
                 <div className="header">
                     <h3>Recent questionnaires</h3>
                 </div>

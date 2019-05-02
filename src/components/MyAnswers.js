@@ -101,7 +101,7 @@ class MyAnswers extends Component {
       form.resetFields();
 			that.setState({ visible: false });
 			// edit a answer
-			if (that.state.editIdx==true){
+			if (that.state.editIdx!=null){
 				let i = that.state.editIdx
 				var answer = that.state.items[i]
 				var url = answer["@controls"]["self"]["href"]

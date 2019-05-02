@@ -71,6 +71,10 @@ class FormAns extends Component {
             visible: false,
         }
     }
+    goHome=()=>{
+        console.log("go home")
+        this.props.history.push('/')
+    }
     showModal = () => {
         this.setState({ visible: true });
     }
@@ -138,7 +142,7 @@ class FormAns extends Component {
             <div className="form">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item>
-                        <div className="icon"><Icon component={iconSvg} ></Icon></div>
+                        <div className="icon" onClick={this.goHome}><Icon component={iconSvg} ></Icon></div>
                     </Form.Item>
                     <Form.Item
                         validateStatus={titleError ? 'error' : ''}

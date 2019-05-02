@@ -32,3 +32,11 @@ page{
   position: fixed;
   bottom: 35px; 
 }
+.deleteAnimation{
+  animation-name: delete;
+  animation-duration: 0.5s;
+}
+@keyframes delete{
+  0% {}
+  100% {height: 0}
+}
