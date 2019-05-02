@@ -168,9 +168,9 @@ class Questionnaire extends Component {
     }else 
       openNotificationWithIcon('error')
   }
-  handleDelete(location,deleteType,e){
-    e.persist()
-    // e.stopPropagation();
+  handleDelete(location,deleteType,e,index){
+    // e.persist()
+    e.stopPropagation();
     
     let that = this
     console.log("delete: "+ location)
@@ -187,13 +187,13 @@ class Questionnaire extends Component {
         }) 
       }else if (deleteType==="answer"){
         let url = location.substring(0,location.lastIndexOf("answers/")+8)
-        console.log(url)  
+        // console.log(url)  
         axios.get(url).then(res=>{
-          console.log(res)
+          // console.log(res.data.items)
           let answers = that.state.answers
-          let qIdx= url.substring(url.lastIndexOf("questions/")+10,url.lastIndexOf("/answers"))
-          console.log(qIdx)
-          answers[qIdx] = res.data.items
+          // let qIdx= url.substring(url.lastIndexOf("questions/")+10,url.lastIndexOf("/answers"))
+          // console.log(qIdx)
+          answers[index] = res.data.items
           that.setState({answers:answers})
         })
       }
@@ -216,7 +216,8 @@ class Questionnaire extends Component {
       
     })
   }
-  seeAnswers(url,index){
+  seeAnswers(url,index,e){
+    e.stopPropagation();
     let that = this
     var answers = this.state.answers
     if (that.state.answers[index]){
@@ -243,7 +244,7 @@ class Questionnaire extends Component {
     var questionnaireURL = this.props.location.state["location"]
     const questionCards = []
     const quesitons = this.state.questions
-    console.log(quesitons)
+    // console.log(quesitons)
     if (quesitons.length !== 0)
       quesitons.forEach((q,index)=>{
         var url = api.root.substring(0,api.root.length-1) + q["@controls"]["self"]["href"]
@@ -253,7 +254,7 @@ class Questionnaire extends Component {
                 dataSource={that.state.answers[index] || ["No answer here."]}
                 style={{"display": that.state.answers[index] ? 'block' : 'none'}}
                 renderItem={item => (
-                  <List.Item extra={<Icon value={index} onClick={(e)=>that.handleDelete(url+"answers/"+item.id+"/","answer",e)} type="close" style={{ paddingRight: "0.8em" }} />}>
+                  <List.Item extra={<Icon value={index} onClick={(e)=>that.handleDelete(url+"answers/"+item.id+"/","answer",e,index)} type="close" style={{ paddingRight: "0.8em" }} />}>
                     <List.Item.Meta
                       description={<div><Text strong>{item.userName}</Text> <Text type="secondary">Answer id: {item.id}</Text><br/>{item.content}</div>}
                     />
@@ -264,7 +265,7 @@ class Questionnaire extends Component {
           <Card type="inner" 
             size="small"
             hoverable="True"
-            onClick={this.seeAnswers.bind(this,url,index)}
+            onClick={(e)=>this.seeAnswers(url,index,e)}
             title={q.title} 
             key={q.id} 
             style={{marginTop:"10px",minHeight:"80px"}}
