@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import {notification, Card} from 'antd'
 import axios from 'axios'
 import './Questionnaire.css'
 import 'antd/dist/antd.css'
-import { Button, Modal, Form, Input, Icon, message} from 'antd';
+import { Button, Modal, Form, Input, Icon, message,notification, Card} from 'antd';
 import api from './api'
 
 const openNotificationWithIcon = (type,msg,desc) => {
@@ -102,7 +101,7 @@ class MyAnswers extends Component {
       form.resetFields();
 			that.setState({ visible: false });
 			// edit a answer
-			if (that.state.editIdx){
+			if (that.state.editIdx===true){
 				let i = that.state.editIdx
 				var answer = that.state.items[i]
 				var url = answer["@controls"]["self"]["href"]
