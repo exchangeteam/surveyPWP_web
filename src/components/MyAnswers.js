@@ -4,6 +4,7 @@ import './Questionnaire.css'
 import 'antd/dist/antd.css'
 import { Button, Modal, Form, Input, Icon, message,notification, Card} from 'antd';
 import api from './api'
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 const openNotificationWithIcon = (type,msg,desc) => {
   notification[type]({
@@ -239,27 +240,32 @@ class MyAnswers extends Component {
 				);
 		})
 		return (
-			<div className="container">
-				<Card title="My answers" className='card' headStyle={{ fontsize: "30px", fontweight: 500 }}
-				>
-					<h3>{this.state.questionnaireInfo ? this.state.questionnaireInfo.title : ""}</h3>
-					<p>Questionnaire id: {this.state.questionnaireInfo ? this.state.questionnaireInfo.id : ""}
-						<br/> {this.state.questionnaireInfo ? (this.state.questionnaireInfo.description ? "Description: "+this.state.questionnaireInfo.description : "no description") : ""}
-					</p>
-					{answerCards.length === 0 ? "No answers" : answerCards}
-						<ModalForm
-							question = {this.state.editQuestion}
-							wrappedComponentRef={this.saveFormRef}
-							visible={this.state.visible}
-							onCancel={this.handleCancel}
-							onCreate={this.handleCreate}
-        		/>
-						<div className="cardBottom">
-							<Button onClick={this.props.history.goBack}> Go back </Button>
-						</div>
-				</Card>
-			</div>
-		)
+				
+					<div className="container">
+						<Card title="My answers" className='card' headStyle={{ fontsize: "30px", fontweight: 500 }}
+						>
+							<h3>{this.state.questionnaireInfo ? this.state.questionnaireInfo.title : ""}</h3>
+							<p>Questionnaire id: {this.state.questionnaireInfo ? this.state.questionnaireInfo.id : ""}
+								<br /> {this.state.questionnaireInfo ? (this.state.questionnaireInfo.description ? "Description: " + this.state.questionnaireInfo.description : "no description") : ""}
+							</p>
+
+							
+							{answerCards.length === 0 ? "No answers" : answerCards}
+							
+							<ModalForm
+								question={this.state.editQuestion}
+								wrappedComponentRef={this.saveFormRef}
+								visible={this.state.visible}
+								onCancel={this.handleCancel}
+								onCreate={this.handleCreate}
+							/>
+							<div className="cardBottom">
+								<Button onClick={this.props.history.goBack}> Go back </Button>
+							</div>
+						</Card>
+					</div>
+				
+			)
 		
 	}
 }
