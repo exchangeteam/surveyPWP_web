@@ -13,9 +13,9 @@ const openNotificationWithIcon = (type,msg,desc) => {
   });
 };
 const showMessage = (mode,msg) =>{
-  if (mode == "error")
+  if (mode === "error")
     message.error(msg)
-  else if (mode == "success")
+  else if (mode === "success")
     message.success(msg)
   else message.warning(msg)
 }
@@ -247,7 +247,7 @@ class MyAnswers extends Component {
 					<p>Questionnaire id: {this.state.questionnaireInfo ? this.state.questionnaireInfo.id : ""}
 						<br/> {this.state.questionnaireInfo ? (this.state.questionnaireInfo.description ? "Description: "+this.state.questionnaireInfo.description : "no description") : ""}
 					</p>
-					{answerCards.length == 0 ? "No answers" : answerCards}
+					{answerCards.length === 0 ? "No answers" : answerCards}
 						<ModalForm
 							question = {this.state.editQuestion}
 							wrappedComponentRef={this.saveFormRef}

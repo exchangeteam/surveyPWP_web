@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {BrowserRouter, Route, Link, Switch} from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 import Answer from './components/Answer'
 import MyAnswers from './components/MyAnswers'
 // import {Router,Route} from 'react-router';

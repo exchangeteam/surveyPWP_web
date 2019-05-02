@@ -3,7 +3,7 @@ import {notification, Card} from 'antd'
 import axios from 'axios'
 import './Questionnaire.css'
 import 'antd/dist/antd.css'
-import { Button, Modal, Form, Input, Icon, message} from 'antd';
+import { Button, Input, message} from 'antd';
 import api from './api'
 
 const { TextArea } = Input;
