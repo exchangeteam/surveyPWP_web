@@ -53,14 +53,23 @@ class FormAns extends Component {
         this.props.form.validateFields(['userName','questionnaireId'],{first:true},(err, values) => {
             if(!err){
                 console.log('Received values of form: ', values);
-                axios.get(api.root+api.prefix+"questionnaires/"+values["questionnaireId"]+"/answers/"+values["userName"]).then(res=>{
+                axios.get(api.root+api.prefix+"questionnaires/"+values["questionnaireId"]).then(res=>{
                     console.log(res)
-                    that.props.history.push({ pathname: '/myAnswers', state: { userName:values["userName"],questionnaireId:values["questionnaireId"] } });
+                    if (res.status===200){
+                        axios.get(api.root+api.prefix+"questionnaires/"+values["questionnaireId"]+"/answers/"+values["userName"]).then(res=>{
+                            console.log(res)
+                            if(res.data.items.length!==0)
+                                that.props.history.push({ pathname: '/myAnswers', state: { userName:values["userName"],questionnaireId:values["questionnaireId"] } });
+                            else showMessage("error","Questionnaire is not answered by USER "+values["userName"]+"!")
+                        },
+                        err=>{
+                            console.log(err)
+                            showMessage("error","User doesn't exist!")
+                        })
+                    } else showMessage("error","Questionnaire doesn't exist!")
                 },
-                err=>{
-                    console.log(err)
-                    showMessage("error","User doesn't exist!")
-                })
+                err=>{showMessage("error","Questionnaire doesn't exist!")})
+                
             }
         })
     }
