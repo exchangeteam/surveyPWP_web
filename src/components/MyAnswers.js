@@ -4,7 +4,7 @@ import './Questionnaire.css'
 import 'antd/dist/antd.css'
 import { Button, Modal, Form, Input, Icon, message,notification, Card} from 'antd';
 import api from './api'
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
 
 const openNotificationWithIcon = (type,msg,desc) => {
   notification[type]({
