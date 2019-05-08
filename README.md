@@ -1,6 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
 
-**And it's already deployed on [surveyPWP.tk](http://surveypwp.tk)**
+> **And it's already deployed on [surveyPWP.tk](http://surveypwp.tk)**
+
+> About the web client design, see [DL5-client design](https://github.com/exchangeteam/SurveyPWP/wiki/DL5.-RESTful-API-client)
 
 
 ## Available Scripts for a local app
